@@ -1,2 +1,3 @@
-# R619AC-OS-public
-Public fixed OpenWrt build configuration for R619AC Personal OS V0.6
+# R619AC-OS Public
+
+OpenWrt-based R619AC Personal OS V0.6 build configuration for the R619AC 128M NAND target.
