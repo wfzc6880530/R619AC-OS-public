@@ -79,13 +79,22 @@ jobs:
           test -d feeds/nezha
           test -e package/luci-app-homeproxy/Makefile
           test -e package/feeds/nikki/luci-app-nikki/Makefile
-          if [ ! -e package/feeds/packages/sing-box/Makefile ] && [ ! -e package/net/sing-box/Makefile ]; then
-            echo 'ERROR: sing-box package required by HomeProxy is missing'
+          # Check feed source paths as well as installed package symlinks.
+          # On this OpenWrt revision sing-box is supplied by feeds/packages/net/sing-box.
+          if [ ! -e feeds/packages/net/sing-box/Makefile ] && \
+             [ ! -e package/feeds/packages/sing-box/Makefile ] && \
+             [ ! -e package/net/sing-box/Makefile ]; then
+            echo 'ERROR: sing-box package required by HomeProxy is missing from source and installed paths'
+            find feeds/packages -maxdepth 3 -path '*/sing-box/Makefile' -print || true
             exit 1
           fi
           test -e package/feeds/nezha/luci-app-nezha/Makefile
-          if [ ! -e package/feeds/nikki/mihomo/Makefile ] && [ ! -e package/feeds/nikki/mihomo-meta/Makefile ]; then
+          if [ ! -e feeds/nikki/mihomo/Makefile ] && \
+             [ ! -e feeds/nikki/mihomo-meta/Makefile ] && \
+             [ ! -e package/feeds/nikki/mihomo/Makefile ] && \
+             [ ! -e package/feeds/nikki/mihomo-meta/Makefile ]; then
             echo 'ERROR: mihomo or mihomo-meta package is missing'
+            find feeds/nikki -maxdepth 3 -path '*/Makefile' -print || true
             exit 1
           fi
 
