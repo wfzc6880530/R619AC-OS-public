@@ -74,7 +74,8 @@ jobs:
           cd openwrt
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          test -d feeds/homeproxy
+          # HomeProxy is cloned directly into package/luci-app-homeproxy, not a feed.
+          test -e package/luci-app-homeproxy/Makefile
           test -d feeds/nikki
           test -d feeds/nezha
           test -e package/luci-app-homeproxy/Makefile
