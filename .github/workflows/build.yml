@@ -56,8 +56,9 @@ jobs:
         run: |
           set -euxo pipefail
           cp feeds.conf.default openwrt/feeds.conf.default
-          cp -a package/luci-app-r619ac openwrt/package/
-          cp -a package/luci-theme-r619ac openwrt/package/
+          git clone --depth=1 https://github.com/wfzc6880530/R619AC-OS-fixed.git r619ac-custom
+          cp -a r619ac-custom/package/luci-app-r619ac openwrt/package/
+          cp -a r619ac-custom/package/luci-theme-r619ac openwrt/package/
           test -f openwrt/package/luci-app-r619ac/Makefile
           test -f openwrt/package/luci-theme-r619ac/Makefile
 
