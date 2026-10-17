@@ -59,6 +59,11 @@ jobs:
           git clone --depth=1 https://github.com/wfzc6880530/R619AC-OS-fixed.git r619ac-custom
           cp -a r619ac-custom/package/luci-app-r619ac openwrt/package/
           cp -a r619ac-custom/package/luci-theme-r619ac openwrt/package/
+          # HomeProxy is a single-package repository, not a feeds-compatible package index.
+          # Put it directly in package/ to avoid scripts/feeds parsing its root Makefile as a feed.
+          sed -i '/^src-git homeproxy /d' openwrt/feeds.conf.default
+          git clone --depth=1 https://github.com/immortalwrt/homeproxy.git openwrt/package/luci-app-homeproxy
+          test -f openwrt/package/luci-app-homeproxy/Makefile
           test -f openwrt/package/luci-app-r619ac/Makefile
           test -f openwrt/package/luci-theme-r619ac/Makefile
 
@@ -72,8 +77,12 @@ jobs:
           test -d feeds/homeproxy
           test -d feeds/nikki
           test -d feeds/nezha
-          test -e package/feeds/homeproxy/luci-app-homeproxy/Makefile
+          test -e package/luci-app-homeproxy/Makefile
           test -e package/feeds/nikki/luci-app-nikki/Makefile
+          if [ ! -e package/feeds/packages/sing-box/Makefile ] && [ ! -e package/net/sing-box/Makefile ]; then
+            echo 'ERROR: sing-box package required by HomeProxy is missing'
+            exit 1
+          fi
           test -e package/feeds/nezha/luci-app-nezha/Makefile
           if [ ! -e package/feeds/nikki/mihomo/Makefile ] && [ ! -e package/feeds/nikki/mihomo-meta/Makefile ]; then
             echo 'ERROR: mihomo or mihomo-meta package is missing'
