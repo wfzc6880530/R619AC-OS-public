@@ -26,7 +26,7 @@ jobs:
           df -h
           sudo rm -rf /usr/local/lib/android /usr/share/dotnet
           sudo rm -rf /usr/local/share/powershell /usr/local/lib/node_modules
-          sudo docker system prune -af || true
+          # Avoid a slow Docker prune on hosted runners; remove large preinstalled SDKs instead.
           sudo apt-get clean || true
           df -h
 
